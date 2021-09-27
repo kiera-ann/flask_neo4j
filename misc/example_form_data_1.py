@@ -1,17 +1,17 @@
 # Import Python's native json library
 import json
 from pprint import pprint
-import pandas as pd
+
 
 # Get the Json data from the response data
 form_json_data = '''{
    "submit_form_data":{
       "Statement":{
-         "statementType":"",
+         "statementType":"Causal",
          "existing":false,
-         "name":"",
-         "description":"",
-         "source":"",
+         "name":"Humans produce CO2",
+         "description":"CO2 levels in the atmosphere are rising due to human actions.",
+         "source":"IPCC-AR5",
          "ShortQuote":""
       },
       "Indicator":{
@@ -20,7 +20,12 @@ form_json_data = '''{
             "data":[
                {
                   "existing":false,
-                  "name":"",
+                  "name":"fossil fuel burning",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"deforestation",
                   "description":""
                }
             ]
@@ -30,7 +35,12 @@ form_json_data = '''{
             "data":[
                {
                   "existing":false,
-                  "name":"",
+                  "name":"local humidity",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"snowpack",
                   "description":""
                }
             ]
@@ -40,7 +50,12 @@ form_json_data = '''{
             "data":[
                {
                   "existing":false,
-                  "name":"",
+                  "name":"atmospheric CO2",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"water quality",
                   "description":""
                }
             ]
@@ -50,7 +65,12 @@ form_json_data = '''{
             "data":[
                {
                   "existing":false,
-                  "name":"",
+                  "name":"forest biodiversity",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"traditional culture",
                   "description":""
                }
             ]
@@ -61,7 +81,7 @@ form_json_data = '''{
          "data":[
             {
                "existing":false,
-               "name":"",
+               "name":"annual",
                "description":"",
                "start_date":"",
                "end_date":""
@@ -73,7 +93,7 @@ form_json_data = '''{
          "data":[
             {
                "existing":false,
-               "name":"",
+               "name":"global",
                "abbreviation":"",
                "poly_x":"",
                "poly_y":"",
@@ -87,7 +107,22 @@ form_json_data = '''{
             "data":[
                {
                   "existing":false,
-                  "name":"",
+                  "name":"energy",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"policy",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"economy",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"society",
                   "description":""
                }
             ]
@@ -97,14 +132,19 @@ form_json_data = '''{
             "data":[
                {
                   "existing":false,
-                  "name":"",
+                  "name":"diversify agriculture practices to combat vulnerability",
+                  "description":""
+               },
+               {
+                  "existing":false,
+                  "name":"STRIPS use for prairie lands",
                   "description":""
                }
             ]
          }
       },
       "TimeRange":{
-         "filled":true,
+         "filled":false,
          "data":[
             {
                "existing":false,
@@ -117,8 +157,6 @@ form_json_data = '''{
       }
    }
 }'''
-
-# https://appdividend.com/2020/11/07/how-to-convert-python-string-to-json-object/#:~:text=To%20convert%20a%20Python%20string,dictionary%20to%20access%20all%20elements.
 
 form_json_object = json.loads(form_json_data)
 # print(form_json_object)
@@ -168,30 +206,3 @@ print('TimeRange_data')
 print(TimeRange_data)
 print()
 print('End')
-
-
-
-
-
-
-# print()
-# print(stud_obj['submit_form_data'])
-# print()
-# print(stud_obj['submit_form_data'][0])
-# print("The type of object is: ", type(stud_obj))
-# json_obj = json.dumps(stud_obj)
-# print(json_obj)
-# print("The type of object is: ", type(json_obj))
-
-# print(json_body)
-# print(type(json_body))
-
-# Convert that data into a python object...
-# info = json.dumps(json_body)
-# print(info)
-
-# load_json = json.loads(info)
-# print()
-# print(load_json["submit_form_data"])
-
-

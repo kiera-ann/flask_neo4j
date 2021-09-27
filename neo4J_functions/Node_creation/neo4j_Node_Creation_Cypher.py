@@ -2,12 +2,14 @@
 
 
 # Function to create Statement Node in Neo4J database
-def create_Statement_Node(tx , statementType , name , description , source) :
-    tx.run("CREATE (:$statementType {name: $name, description: $description, source: $source, statementType: $statementType})" ,
+def create_Statement_Node(tx , statementType , name , description , source , ShortQuote) :
+    run_string = f"CREATE (:{statementType}"
+    tx.run(run_string + " {name: $name, description: $description, source: $source, statementType: $statementType, ShortQuote: $ShortQuote})" ,
            name=name ,
            description=description ,
            source=source ,
-           statementType=statementType)
+           statementType=statementType ,
+           ShortQuote=ShortQuote)
 
 
 # Function to create Indicator Node in Neo4J database
