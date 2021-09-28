@@ -3,8 +3,8 @@
 
 # Function to create Statement Node in Neo4J database
 def create_Statement_Node(tx , statementType , name , description , source , ShortQuote) :
-    run_string = f"CREATE (:{statementType}"
-    tx.run(run_string + " {name: $name, description: $description, source: $source, statementType: $statementType, ShortQuote: $ShortQuote})" ,
+    statement_type_string = f"CREATE (:{statementType}"
+    tx.run(statement_type_string+ " {name: $name, description: $description, source: $source, statementType: $statementType, ShortQuote: $ShortQuote})" ,
            name=name ,
            description=description ,
            source=source ,
