@@ -1,11 +1,11 @@
 # Import Python's native json library
 import json
 from pprint import pprint
+
+# Custom Python modules
 from neo4J_functions.Node_creation.neo4j_Node_Creation_Transaction import perform_neo4j_write_transaction_Node_creation
 from neo4J_functions.Relationship_creation.neo4j_Relationship_Creation_Transaction import perform_neo4j_write_transaction_Relationship_creation
 
-
-# Custom Python modules
 
 # Function to convert response string data to python dictionary for further processing
 def convert_form_data_json(form_data_string) :
@@ -73,7 +73,6 @@ def convert_form_data_json(form_data_string) :
 
     # print(dict_of_fields_filled.keys())
     # print(len(dict_of_fields_filled.keys()))
-
 
     # for key, value in dict_of_fields_filled:
     #     dict_to_send = { } # Clear and Initialize dictionary

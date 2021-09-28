@@ -86,6 +86,7 @@ def perform_neo4j_write_transaction_Relationship_creation(data_dict) :
                             graphDB_Session.write_transaction(create_INFLUENCES_Relationship_to_Indicator_Nodes ,
                                                               name_of_Indicator_IN=name_of_Indicator_IN ,
                                                               name_of_Indicator_S=name_of_Indicator_S)
+
         if "DECREASE_IN" in data_for_node_creation :
             for index in range(len(data_for_node_creation['DECREASE_IN'])) :
                 name_of_Indicator_IN = data_for_node_creation['DECREASE_IN'][index]['name']
@@ -96,6 +97,7 @@ def perform_neo4j_write_transaction_Relationship_creation(data_dict) :
                             graphDB_Session.write_transaction(create_INFLUENCES_Relationship_to_Indicator_Nodes ,
                                                               name_of_Indicator_IN=name_of_Indicator_IN ,
                                                               name_of_Indicator_S=name_of_Indicator_S)
+
                 if "DECREASES" in data_for_node_creation :
                     for index in range(len(data_for_node_creation['DECREASES'])) :
                         name_of_Indicator_S = data_for_node_creation['DECREASES'][index]['name']
