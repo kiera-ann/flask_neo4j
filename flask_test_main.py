@@ -1,4 +1,5 @@
-from flask import Flask , jsonify, request, Response
+from flask import Flask , jsonify , request , Response
+
 app = Flask(__name__)
 
 # from flask_accept import accept
@@ -11,8 +12,6 @@ from neo4J_functions.find_node_label_names import find_node_names
 from utility_functions.time_stamp_api_call import utc_timestamp_data_api_call
 # Handle submitted form data
 from neo4J_functions.parse_submitted_form_data import convert_form_data_json
-
-
 
 
 # General
@@ -36,13 +35,14 @@ def Neo4J_get_existing_label_names(label_name) :
     # Enables CORS in Flask servers
     # Source: https://dev.to/matheusguimaraes/fast-way-to-enable-cors-in-flask-servers-42p0
     # Enable Access-Control-Allow-Origin
-    json_data.headers.add("Access-Control-Allow-Origin", "*")
+    json_data.headers.add("Access-Control-Allow-Origin" , "*")
 
-    return json_data
+    return json_data , 200
+
 
 # Neo4J_get_existing_label_names("TimeRange")
 
-@app.route('/api/v1/request_data' , methods=['GET', 'POST'])
+@app.route('/api/v1/request_data' , methods=['GET' , 'POST'])
 def parse_request() :
     # data = request.data  # data is empty
     #  to decode the data sent by the client-side to UTF-8
@@ -59,7 +59,6 @@ def parse_request() :
     return Response(status=201)
 
 
-
 if __name__ == '__main__' :
     # app.run(port=4567 , host='0.0.0.0' , ssl_context='adhoc')
     # app.run(port=4567 , host='0.0.0.0' , ssl_context='adhoc')
@@ -68,5 +67,4 @@ if __name__ == '__main__' :
 
     # Serve with waitress; Increase number of threads
     # serve(app, host='0.0.0.0', port=4545, threads= 10)
-    app.run(port=4545 , host='0.0.0.0', debug=True)
-
+    app.run(port=4545 , host='0.0.0.0' , debug=True)
