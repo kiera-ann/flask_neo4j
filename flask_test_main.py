@@ -2,12 +2,15 @@ from flask import Flask , jsonify , request , Response
 
 app = Flask(__name__)
 
+# Disable sorting app-wide
+app.config['JSON_SORT_KEYS'] = False
+
 # from flask_accept import accept
 from waitress import serve
 
-# Custom functions
-# Find Node name
-from neo4J_functions.find_node_label_names import find_node_names
+# Custom functions=
+from neo4J_functions.find_node_label_names import find_node_names  # Find Node name
+from neo4J_functions.find_node_label_name_description import find_node_names_and_description  # Find Node name and description
 # timestamp function
 from utility_functions.time_stamp_api_call import utc_timestamp_data_api_call
 # Handle submitted form data
@@ -17,7 +20,7 @@ from neo4J_functions.parse_submitted_form_data import convert_form_data_json
 # General
 # Get existing label name based on "label_name" sent in get request
 @app.route('/api/v1/neo4j/existing_label_name/<label_name>' , methods=['GET'])
-def Neo4J_get_existing_label_names(label_name) :
+def fetch_existing_Neo4J_Node_label_names(label_name) :
     # Get Names of Nodes of interest
     names_of_nodes_dict = find_node_names(label_name)
 
@@ -27,6 +30,31 @@ def Neo4J_get_existing_label_names(label_name) :
     # Combines data from all functions
     total_data_dict = {
         **names_of_nodes_dict ,
+        **timestamp_utc_data_dict
+    }
+
+    json_data = jsonify(total_data_dict)
+
+    # Enables CORS in Flask servers
+    # Source: https://dev.to/matheusguimaraes/fast-way-to-enable-cors-in-flask-servers-42p0
+    # Enable Access-Control-Allow-Origin
+    json_data.headers.add("Access-Control-Allow-Origin" , "*")
+
+    return json_data , 200
+
+
+# Get existing label name and description based on "label_name" sent in get request
+@app.route('/api/v1/neo4j/existing_label_name_description/<label_name>' , methods=['GET'])
+def fetch_existing_Neo4J_Node_label_names_with_description(label_name) :
+    # Get Names of Nodes and corresponding description of Interest
+    names_of_nodes_description_dict = find_node_names_and_description(label_name)
+
+    # Timestamp API call
+    timestamp_utc_data_dict = utc_timestamp_data_api_call()
+
+    # Combines data from all functions
+    total_data_dict = {
+        **names_of_nodes_description_dict ,
         **timestamp_utc_data_dict
     }
 

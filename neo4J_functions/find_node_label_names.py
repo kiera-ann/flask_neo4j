@@ -24,6 +24,7 @@ Projection = "Projection"
 Solution = "Solution"
 Impact = "Impact"
 Statement_Node_Labels = [Causal , Adaptation , Projection , Solution , Impact]
+Other_Node_Labels = [Indicator , SpaceRegion , ClimatologyTime , Topic , TimeRange , Causal , Adaptation , Projection , Solution , Impact]
 
 
 # Function to generate Cypher string for Node query
@@ -64,23 +65,26 @@ def find_node_names(node_label_name) :
         new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
     else :
-        with graphDB_Driver.session() as graphDB_Session :
-            list_of_names = []  # Initialize empty list which stores all node names
-            node_query_string = create_cypher_query_string(node_label_name)
-            nodes = graphDB_Session.run(node_query_string)  # Find all nodes with Node label name provided
-            for node in nodes :
-                list_of_names.append(node["node_label_name"].strip())  # Append list and remove white spaces on left and right of string
+        if node_label_name in Other_Node_Labels :
+            with graphDB_Driver.session() as graphDB_Session :
+                list_of_names = []  # Initialize empty list which stores all node names
+                node_query_string = create_cypher_query_string(node_label_name)
+                nodes = graphDB_Session.run(node_query_string)  # Find all nodes with Node label name provided
+                for node in nodes :
+                    list_of_names.append(node["node_label_name"].strip())  # Append list and remove white spaces on left and right of string
 
-        # Sorting list in case-insensitive manner
-        new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
+            # Sorting list in case-insensitive manner
+            new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
     # Terminate connection to Neo4J Server
     graphDB_Driver.close()
 
-    data_to_return = { }  # Initialize dictionary
     # Make dictionary for data to be returned
+    # data_to_return = {
+    #     node_label_name : new_list_of_names
+    # }
     data_to_return = {
-        node_label_name : new_list_of_names
+        'data' : new_list_of_names
     }
 
     return data_to_return
