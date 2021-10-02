@@ -2,8 +2,6 @@
 # Neo4J First party Python Binding
 from neo4j import GraphDatabase
 
-from collections import OrderedDict
-
 # Neo4J Server Credentials
 # uri = "neo4j://localhost:7687"
 uri = "bolt://localhost:7687"  # From Dr. Pershing graph.py script
@@ -58,64 +56,102 @@ def create_cypher_query_string(node_label_name) :
 #     temp_dict_value = temp_dict_value + "."
 
 def find_node_names_and_description(node_label_name) :
-    data_dict = { }  # Initialize dictionary
+    # Initialize key variables in function
+    node_label_name = str(node_label_name)  # Ensure variable "node_label_name" is of type string
+    intermediate_list_of_dict_to_return = []  # Initialize list for temporary storage of list of data to return
+    sorted_list_of_dict_to_return = []  # Initialize list for final return of sorted dictionary data
+
+    # Since SpaceRegion Labelled Nodes do not contain "description" property, they are handled differently
     if node_label_name != "SpaceRegion" :
+        # Special case if fetch request is for all Statements
         if node_label_name == "Statements" :
-            list_of_cypher_queries = []  # Initialize list
-            # Makes list of cypher query strings
+            list_of_node_label_name_statement_str = []  # Initialize list for storing all Statement Label Names
             for index in range(len(Statement_Node_Labels)) :
                 node_label_name_statement_str = str(Statement_Node_Labels[index])
-                list_of_cypher_queries.append(create_cypher_query_string(node_label_name_statement_str))  # List of Statement Query Cypher Strings
-                # Executes queries to Neo4j database
+                list_of_node_label_name_statement_str.append(node_label_name_statement_str)
+
+            temp_data_dict = { }  # Initialize dictionary for temporary storage of key: Node Label, values: list of names in specified Statement Node Label
+            for node_label_name in list_of_node_label_name_statement_str :
+                cypher_query_string = create_cypher_query_string(node_label_name)  # Build Statement Query Cypher String
+                list_of_dictionary_name_description_nodes = []  # Initialize empty list which stores dictionary of node name and description
                 with graphDB_Driver.session() as graphDB_Session :
-                    nodes = graphDB_Session.run(list_of_cypher_queries[index])
+                    nodes = graphDB_Session.run(cypher_query_string)  # Find all nodes with Statement Node label name provided
                     for node in nodes :
+                        data_dict = { }  # Initialize dictionary
                         temp_dict_key = node["node_label_name"].strip()
                         temp_dict_value = node["node_label_description"].strip()
                         # Fills the dictionary with data from query
                         data_dict[temp_dict_key] = temp_dict_value
+                        list_of_dictionary_name_description_nodes.append(data_dict)  # Append list with dictionary data
+                temp_data_dict[node_label_name] = list_of_dictionary_name_description_nodes
+
+            # Format dictionary with keys "name", "description", and "statementType"
+            for statementType , NodeNames_w_Description in temp_data_dict.items() :
+                for node_name_description in NodeNames_w_Description :
+                    for node_name , node_description in node_name_description.items() :
+                        dict_to_return = { }  # Initialize dictionary
+                        dict_to_return['name'] = node_name
+                        dict_to_return['description'] = node_description
+                        dict_to_return['statementType'] = statementType
+                        intermediate_list_of_dict_to_return.append(dict_to_return)
+            sorted_list_of_dict_to_return = (sorted(intermediate_list_of_dict_to_return , key=lambda s : s['name'].casefold()))
+
 
         else :
+            # Case where fetch is for Nodes with Labels other than "SpaceRegion" or "Statements"
             if node_label_name in Other_Node_Labels_wo_SpaceRegion :
+                data_dict_to_sort = { }  # Initialize dictionary
+                list_of_dictionary_name_description_nodes = []  # Initialize empty list which stores dictionary of node name and description
+                temp_data_dict = { }  # Initialize dictionary for temporary storage of key: Node Label, values: list of names in specified Statement Node Label
                 with graphDB_Driver.session() as graphDB_Session :
-                    node_query_string = create_cypher_query_string(node_label_name)
-                    nodes = graphDB_Session.run(node_query_string)  # Find all nodes with Node label name provided
+                    list_of_names = []  # Initialize empty list which stores all node names
+                    cypher_query_string = create_cypher_query_string(node_label_name)  # Build Statement Query Cypher String
+                    nodes = graphDB_Session.run(cypher_query_string)  # Find all nodes with Node label name provided
                     for node in nodes :
+                        data_dict = { }  # Initialize dictionary
                         temp_dict_key = node["node_label_name"].strip()
                         temp_dict_value = node["node_label_description"].strip()
                         # Fills the dictionary with data from query
                         data_dict[temp_dict_key] = temp_dict_value
+                        list_of_dictionary_name_description_nodes.append(data_dict)  # Append list with dictionary data
+                    temp_data_dict[node_label_name] = list_of_dictionary_name_description_nodes
 
-        data_dict_ordered = dict(OrderedDict(sorted(data_dict.items() , key=lambda i : i[0].lower())))
-        # Make dictionary for data to be returned
-        # data_to_return = {
-        #     node_label_name : data_dict_ordered
-        # }
-
-        data_to_return = {
-            'data' : data_dict_ordered
-        }
+                # Format dictionary with keys "name", "description", and "statementType"
+                for nodeType , NodeNames_w_Description in temp_data_dict.items() :
+                    for node_name_description in NodeNames_w_Description :
+                        for node_name , node_description in node_name_description.items() :
+                            dict_to_return = { }  # Initialize dictionary
+                            dict_to_return['name'] = node_name
+                            dict_to_return['description'] = node_description
+                            if node_label_name in Statement_Node_Labels :
+                                dict_to_return['statementType'] = node_label_name
+                            else :
+                                dict_to_return['nodeType'] = node_label_name
+                            intermediate_list_of_dict_to_return.append(dict_to_return)
+                sorted_list_of_dict_to_return = (sorted(intermediate_list_of_dict_to_return , key=lambda s : s['name'].casefold()))
 
 
     else :
         if node_label_name == "SpaceRegion" :
             with graphDB_Driver.session() as graphDB_Session :
                 list_of_names = []  # Initialize empty list which stores all node names
-                node_query_string = create_cypher_query_string(node_label_name)
+                node_query_string = create_cypher_query_string(node_label_name)  # Build Statement Query Cypher String
                 nodes = graphDB_Session.run(node_query_string)  # Find all nodes with Node label name provided
                 for node in nodes :
-                    list_of_names.append(node["node_label_name"].strip())
+                    list_of_names.append(node["node_label_name"].strip())  # Append list and remove white spaces on left and right of string
 
-        # Sorting list in case-insensitive manner
-        new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
+            # Sorting list in case-insensitive manner
+            new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
+            # Formatting of returned data into list of dictionary with keys "name" and type of node
+            for node_name in new_list_of_names :
+                dict_to_return = { }  # Initialize dictionary
+                dict_to_return['name'] = node_name
+                dict_to_return['nodeType'] = node_label_name
+                sorted_list_of_dict_to_return.append(dict_to_return)
 
-        # Make dictionary for data to be returned
-        # data_to_return = {
-        #     node_label_name : new_list_of_names
-        # }
-        data_to_return = {
-            'data' : new_list_of_names
-        }
+    data_to_return = {
+        'data' : sorted_list_of_dict_to_return
+    }
 
     # Terminate connection to Neo4J Server
     graphDB_Driver.close()
@@ -123,3 +159,5 @@ def find_node_names_and_description(node_label_name) :
     return data_to_return
 
 # find_node_names_and_description(Impact) # Debug Function Print line
+# find_node_names_and_description("Statements")
+# print(find_node_names_and_description("TimeRange"))
