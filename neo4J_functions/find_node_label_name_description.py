@@ -8,9 +8,6 @@ uri = "bolt://localhost:7687"  # From Dr. Pershing graph.py script
 userName = "neo4j"
 password = "climate"
 
-# Connect to the Neo4j database server
-graphDB_Driver = GraphDatabase.driver(uri , auth=(userName , password))
-
 # List of Node label names
 Indicator = "Indicator"
 SpaceRegion = "SpaceRegion"
@@ -56,6 +53,8 @@ def create_cypher_query_string(node_label_name) :
 #     temp_dict_value = temp_dict_value + "."
 
 def find_node_names_and_description(node_label_name) :
+    # Connect to the Neo4j database server
+    graphDB_Driver = GraphDatabase.driver(uri , auth=(userName , password))
     # Initialize key variables in function
     node_label_name = str(node_label_name)  # Ensure variable "node_label_name" is of type string
     intermediate_list_of_dict_to_return = []  # Initialize list for temporary storage of list of data to return
