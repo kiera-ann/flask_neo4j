@@ -82,3 +82,6 @@ with graphDB_Driver.session() as graphDB_Session :
     graphDB_Session.write_transaction(delete_TimeRange_data_in_neo4j)
     graphDB_Session.write_transaction(delete_ClimatologyTime_data_in_neo4j)
     print("Deleted all specified Neo4j Entries")
+
+# Terminate connection to Neo4J Server
+graphDB_Driver.close()

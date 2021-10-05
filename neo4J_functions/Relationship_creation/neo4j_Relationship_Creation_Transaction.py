@@ -24,7 +24,6 @@ password = "password"
 
 def perform_neo4j_write_transaction_Relationship_creation(data_dict) :
     data_for_node_creation = data_dict
-    # print(data_for_node_creation)
 
     # Connect to the Neo4j database server
     graphDB_Driver = GraphDatabase.driver(uri , auth=(userName , password))
