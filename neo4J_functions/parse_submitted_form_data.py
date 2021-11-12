@@ -1,6 +1,5 @@
 # Import Python's native json library
 import json
-from pprint import pprint
 
 # Custom Python modules
 from neo4J_functions.Node_creation.neo4j_Node_Creation_Transaction import perform_neo4j_write_transaction_Node_creation
@@ -66,26 +65,8 @@ def convert_form_data_json(form_data_string) :
     # print(list_of_fields_filled)
     # print(len(list_of_fields_filled))
     # pprint(dict_of_fields_filled)
+
     # Write Nodes
     perform_neo4j_write_transaction_Node_creation(dict_of_fields_filled)
     # Write relationships
     perform_neo4j_write_transaction_Relationship_creation(dict_of_fields_filled)
-
-    # print(dict_of_fields_filled.keys())
-    # print(len(dict_of_fields_filled.keys()))
-
-    # for key, value in dict_of_fields_filled:
-    #     dict_to_send = { } # Clear and Initialize dictionary
-    #     dict_to_send[key]=value
-    #     print(dict_to_send)
-    #     # perform_neo4j_write_transaction_Node_creation(dict_to_send)
-    #
-    # for index in range(len(dict_of_fields_filled.keys())):
-    #     print(index)
-    #     print(dict_of_fields_filled.items()[index])
-
-    # for key, value in dict_of_fields_filled.items():
-    #     # print(key)
-    #     # print(value)
-    #     # print(key , value)
-    #     perform_neo4j_write_transaction_Node_creation(key, value)
