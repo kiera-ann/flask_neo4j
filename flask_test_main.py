@@ -32,14 +32,12 @@ def fetch_existing_Neo4J_Node_label_names(label_name) :
         **names_of_nodes_dict ,
         **timestamp_utc_data_dict
     }
-
     json_data = jsonify(total_data_dict)
 
     # Enables CORS in Flask servers
     # Source: https://dev.to/matheusguimaraes/fast-way-to-enable-cors-in-flask-servers-42p0
     # Enable Access-Control-Allow-Origin
     json_data.headers.add("Access-Control-Allow-Origin" , "*")
-
     return json_data , 200
 
 
@@ -57,31 +55,21 @@ def fetch_existing_Neo4J_Node_label_names_with_description(label_name) :
         **names_of_nodes_description_dict ,
         **timestamp_utc_data_dict
     }
-
     json_data = jsonify(total_data_dict)
-
-    # Enables CORS in Flask servers
-    # Source: https://dev.to/matheusguimaraes/fast-way-to-enable-cors-in-flask-servers-42p0
-    # Enable Access-Control-Allow-Origin
     json_data.headers.add("Access-Control-Allow-Origin" , "*")
-
     return json_data , 200
 
 
-# Neo4J_get_existing_label_names("TimeRange")
-
-@app.route('/api/v1/request_data' , methods=['GET' , 'POST'])
+# Handles the JSON submitted through front end web form that handles Node creation and Node relationship creation
+@app.route('/api/v1/process_form_data' , methods=['GET' , 'POST'])
 def parse_request() :
     # data = request.data  # data is empty
     #  to decode the data sent by the client-side to UTF-8
     #  Source: https://stackoverflow.com/questions/57337321/flask-b-text-appears-before-request-data-results
     data_received_decoded = request.data.decode('UTF-8')
-    # print(type(data_1))
+    # Processes the creation of Nodes and Node relationship
     convert_form_data_json(data_received_decoded)
-    # json_data = jsonify(data_received_decoded)
-    # print(json_data)
-    # print(data)
-    # print(data_received_decoded)
+
     # if data_received_decoded:
     #     return Response(status=201)
     return Response(status=201)
