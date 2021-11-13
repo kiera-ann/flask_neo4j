@@ -23,10 +23,12 @@ Statement_Node_Labels = [Causal , Adaptation , Projection , Solution , Impact]
 Other_Node_Labels = [Indicator , SpaceRegion , ClimatologyTime , Topic , TimeRange , Causal , Adaptation , Projection , Solution , Impact]
 
 
+# Connect to the Neo4j database server
+graphDB_Driver = GraphDatabase.driver(uri , auth=(userName , password))
+
 # Function to generate Cypher string for Node query
 def create_cypher_query_string(node_label_name) :
-    # Connect to the Neo4j database server
-    graphDB_Driver = GraphDatabase.driver(uri , auth=(userName , password))
+
     # Example of completed built query string
     # cql = "MATCH (x:SpaceRegion) RETURN x.name AS Space" # SpaceRegion
 
