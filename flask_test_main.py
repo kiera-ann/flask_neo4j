@@ -8,15 +8,15 @@ CORS(app)
 app.config['JSON_SORT_KEYS'] = False
 
 # from flask_accept import accept
-from waitress import serve
 
 # Custom functions=
-from neo4J_functions.find_node_label_names import find_node_names  # Find Node name
-from neo4J_functions.find_node_label_name_description import find_node_names_and_description  # Find Node name and description
+from neo4J_functions.Node_search.fetch_node_names_by_label import find_node_names  # Find Node name
+from neo4J_functions.Node_search.fetch_node_properties_by_label import fetch_node_properties_by_label  # Fetch all Node Properties
+
 # timestamp function
 from utility_functions.time_stamp_api_call import utc_timestamp_data_api_call
 # Handle submitted form data
-from neo4J_functions.parse_submitted_form_data import convert_form_data_json
+from neo4J_functions.Statement_Form_creation.parse_submitted_form_data import convert_form_data_json
 
 
 # General
@@ -48,7 +48,7 @@ def fetch_existing_Neo4J_Node_label_names(label_name) :
 @cross_origin()
 def fetch_existing_Neo4J_Node_label_names_with_description(label_name) :
     # Get Names of Nodes and corresponding description of Interest
-    names_of_nodes_description_dict = find_node_names_and_description(label_name)
+    names_of_nodes_description_dict = fetch_node_properties_by_label(label_name)
 
     # Timestamp API call
     timestamp_utc_data_dict = utc_timestamp_data_api_call()
