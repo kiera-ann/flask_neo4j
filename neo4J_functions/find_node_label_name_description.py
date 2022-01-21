@@ -92,6 +92,7 @@ def find_node_names_and_description(node_label_name) :
                         dict_to_return['name'] = node_name
                         dict_to_return['description'] = node_description
                         dict_to_return['statementType'] = statementType
+                        dict_to_return['existing'] = True
                         intermediate_list_of_dict_to_return.append(dict_to_return)
             sorted_list_of_dict_to_return = (sorted(intermediate_list_of_dict_to_return , key=lambda s : s['name'].casefold()))
 
@@ -122,6 +123,40 @@ def find_node_names_and_description(node_label_name) :
                             dict_to_return = { }  # Initialize dictionary
                             dict_to_return['name'] = node_name
                             dict_to_return['description'] = node_description
+                            dict_to_return['existing'] = True
+                            if node_label_name in Statement_Node_Labels :
+                                dict_to_return['statementType'] = node_label_name
+                            else :
+                                dict_to_return['nodeType'] = node_label_name
+                            intermediate_list_of_dict_to_return.append(dict_to_return)
+                sorted_list_of_dict_to_return = (sorted(intermediate_list_of_dict_to_return , key=lambda s : s['name'].casefold()))
+
+            # Case where fetch is for Nodes with Label "TimeRange"
+            if node_label_name == "TimeRange" :
+                data_dict_to_sort = { }  # Initialize dictionary
+                list_of_dictionary_name_description_other_properties_nodes = []  # Initialize empty list which stores dictionary of node name and description
+                temp_data_dict = { }  # Initialize dictionary for temporary storage of key: Node Label, values: list of names in specified Statement Node Label
+                with graphDB_Driver.session() as graphDB_Session :
+                    list_of_names = []  # Initialize empty list which stores all node names
+                    cypher_query_string = create_cypher_query_string(node_label_name)  # Build Statement Query Cypher String
+                    nodes = graphDB_Session.run(cypher_query_string)  # Find all nodes with Node label name provided
+                    for node in nodes :
+                        data_dict = { }  # Initialize dictionary
+                        temp_dict_key = node["node_label_name"].strip()
+                        temp_dict_value = node["node_label_description"].strip()
+                        # Fills the dictionary with data from query
+                        data_dict[temp_dict_key] = temp_dict_value
+                        list_of_dictionary_name_description_other_properties_nodes.append(data_dict)  # Append list with dictionary data
+                    temp_data_dict[node_label_name] = list_of_dictionary_name_description_other_properties_nodes
+
+                # Format dictionary with keys "name", "description", and "statementType"
+                for nodeType , NodeNames_w_Description in temp_data_dict.items() :
+                    for node_name_description in NodeNames_w_Description :
+                        for node_name , node_description in node_name_description.items() :
+                            dict_to_return = { }  # Initialize dictionary
+                            dict_to_return['name'] = node_name
+                            dict_to_return['description'] = node_description
+                            dict_to_return['existing'] = True
                             if node_label_name in Statement_Node_Labels :
                                 dict_to_return['statementType'] = node_label_name
                             else :
@@ -146,6 +181,7 @@ def find_node_names_and_description(node_label_name) :
                 dict_to_return = { }  # Initialize dictionary
                 dict_to_return['name'] = node_name
                 dict_to_return['nodeType'] = node_label_name
+                dict_to_return['existing'] = True
                 sorted_list_of_dict_to_return.append(dict_to_return)
 
     data_to_return = {

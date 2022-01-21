@@ -75,6 +75,7 @@ def find_node_names(node_label_name) :
                 dict_to_return = { }  # Initialize dictionary
                 dict_to_return['name'] = node_name
                 dict_to_return['statementType'] = statementType
+                dict_to_return['existing'] = True
                 intermediate_list_of_dict_to_return.append(dict_to_return)
 
         # Sorting list in case-insensitive manner
@@ -99,6 +100,7 @@ def find_node_names(node_label_name) :
             for node_name in new_list_of_names :
                 dict_to_return = { }  # Initialize dictionary
                 dict_to_return['name'] = node_name
+                dict_to_return['existing'] = True
                 if node_label_name in Statement_Node_Labels :
                     dict_to_return['statementType'] = node_label_name
                 else :

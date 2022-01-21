@@ -1,6 +1,8 @@
 from flask import Flask , jsonify , request , Response
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
 
 # Disable sorting app-wide
 app.config['JSON_SORT_KEYS'] = False
@@ -37,12 +39,13 @@ def fetch_existing_Neo4J_Node_label_names(label_name) :
     # Enables CORS in Flask servers
     # Source: https://dev.to/matheusguimaraes/fast-way-to-enable-cors-in-flask-servers-42p0
     # Enable Access-Control-Allow-Origin
-    json_data.headers.add("Access-Control-Allow-Origin" , "*")
+    # json_data.headers.add("Access-Control-Allow-Origin" , "*")
     return json_data , 200
 
 
 # Get existing label name and description based on "label_name" sent in get request
 @app.route('/api/v1/neo4j/existing_label_name_description/<label_name>' , methods=['GET'])
+@cross_origin()
 def fetch_existing_Neo4J_Node_label_names_with_description(label_name) :
     # Get Names of Nodes and corresponding description of Interest
     names_of_nodes_description_dict = find_node_names_and_description(label_name)
@@ -56,12 +59,13 @@ def fetch_existing_Neo4J_Node_label_names_with_description(label_name) :
         **timestamp_utc_data_dict
     }
     json_data = jsonify(total_data_dict)
-    json_data.headers.add("Access-Control-Allow-Origin" , "*")
+    # json_data.headers.add("Access-Control-Allow-Origin" , "*")
     return json_data , 200
 
 
 # Handles the JSON submitted through front end web form that handles Node creation and Node relationship creation
 @app.route('/api/v1/process_form_data' , methods=['GET' , 'POST'])
+@cross_origin()
 def parse_request() :
     # data = request.data  # data is empty
     #  to decode the data sent by the client-side to UTF-8
