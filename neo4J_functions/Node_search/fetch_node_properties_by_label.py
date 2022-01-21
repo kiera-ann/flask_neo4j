@@ -51,7 +51,7 @@ def fetch_node_properties_by_label(nodeType) :
         sorted_list_of_dict_to_return = parse_fetch_Node_name_description(graphDB_Driver , nodeType)
 
     # If Statements (all) or individual Statements (Causal , Adaptation , Projection , Solution , Impact)
-    if nodeType == "Statements":
+    if nodeType == "Statements" :
         nodeType = Statement_Node_Labels
         sorted_list_of_dict_to_return = parse_fetch_all_Statement_properties(graphDB_Driver , nodeType)
 

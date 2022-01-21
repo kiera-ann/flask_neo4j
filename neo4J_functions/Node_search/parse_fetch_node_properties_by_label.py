@@ -32,8 +32,8 @@ def parse_fetch_SpaceRegion_properties(graphDB_Driver , nodeType) :
         # Sorting list in case-insensitive manner
         new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
-        for sorted_name in new_list_of_names :
-            sorted_list_of_dict_to_return.append(data_dict[sorted_name])
+    for sorted_name in new_list_of_names :
+        sorted_list_of_dict_to_return.append(data_dict[sorted_name])
 
     return sorted_list_of_dict_to_return
 
@@ -61,8 +61,8 @@ def parse_fetch_TimeRange_properties(graphDB_Driver , nodeType) :
         # Sorting list in case-insensitive manner
         new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
-        for sorted_name in new_list_of_names :
-            sorted_list_of_dict_to_return.append(data_dict[sorted_name])
+    for sorted_name in new_list_of_names :
+        sorted_list_of_dict_to_return.append(data_dict[sorted_name])
 
     return sorted_list_of_dict_to_return
 
@@ -90,8 +90,8 @@ def parse_fetch_ClimatologyTime_properties(graphDB_Driver , nodeType) :
         # Sorting list in case-insensitive manner
         new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
-        for sorted_name in new_list_of_names :
-            sorted_list_of_dict_to_return.append(data_dict[sorted_name])
+    for sorted_name in new_list_of_names :
+        sorted_list_of_dict_to_return.append(data_dict[sorted_name])
 
     return sorted_list_of_dict_to_return
 
@@ -117,8 +117,8 @@ def parse_fetch_Node_name_description(graphDB_Driver , nodeType) :
         # Sorting list in case-insensitive manner
         new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
-        for sorted_name in new_list_of_names :
-            sorted_list_of_dict_to_return.append(data_dict[sorted_name])
+    for sorted_name in new_list_of_names :
+        sorted_list_of_dict_to_return.append(data_dict[sorted_name])
 
     return sorted_list_of_dict_to_return
 
@@ -135,7 +135,7 @@ def parse_fetch_individual_Statement_properties(graphDB_Driver , nodeType) :
             node_label_name = node["node_label_name"].strip()
             data_dict[node_label_name] = {
                 "name" : node_label_name ,
-                "nodeType" : nodeType ,
+                "statementType" : nodeType ,
                 "description" : node["node_label_description"] ,
                 "source" : node["Statement_source"] ,
                 "existing" : True
@@ -145,8 +145,8 @@ def parse_fetch_individual_Statement_properties(graphDB_Driver , nodeType) :
         # Sorting list in case-insensitive manner
         new_list_of_names = (sorted(list_of_names , key=lambda s : s.casefold()))
 
-        for sorted_name in new_list_of_names :
-            sorted_list_of_dict_to_return.append(data_dict[sorted_name])
+    for sorted_name in new_list_of_names :
+        sorted_list_of_dict_to_return.append(data_dict[sorted_name])
 
     return sorted_list_of_dict_to_return
 
@@ -164,7 +164,7 @@ def parse_fetch_all_Statement_properties(graphDB_Driver , nodeType) :
                 node_label_name = node["node_label_name"].strip()
                 data_dict[node_label_name] = {
                     "name" : node_label_name ,
-                    "nodeType" : statement_type ,
+                    "statementType" : statement_type ,
                     "description" : node["node_label_description"] ,
                     "source" : node["Statement_source"] ,
                     "existing" : True
