@@ -1,4 +1,4 @@
-# Climate Central Knowledge Graph Project
+# Climate Related Knowledge Graph Project
 
 This project is a significant refactor of the pre-existing backend the knowledge base graph system that utilized a 
 climate based ontology for categorizing and linking climate related events and factors. 
